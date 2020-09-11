@@ -1,0 +1,27 @@
+## Create VM using GCP console
+
+gcloud beta compute instances create my-vm-1 --zone=us-central1-a --machine-type=n1-standard-1 --subnet=default --network-tier=PREMIUM --tags=http-server --image=debian-9-stretch-v20200910 --image-project=debian-cloud --boot-disk-size=10GB --boot-disk-type=pd-standard --boot-disk-device-name=my-vm-1 
+
+gcloud compute  firewall-rules create default-allow-http --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http-server
+
+
+
+## Create a VM using gcloud command line
+
+gcloud compute instances create "my-vm-2" \
+--machine-type "n1-standard-1" \
+--image-project "debian-cloud" \
+--image "debian-9-stretch-v20190213" \
+--subnet "default"
+
+
+## Connect between VM instances
+
+ping my-vm-1
+ssh my-vm-1
+sudo apt-get install nginx-light -y
+sudo nano /var/www/html/index.nginx-debian.html
+Hi from YOUR_NAME
+curl http://localhost/
+exit
+curl http://my-vm-1/
